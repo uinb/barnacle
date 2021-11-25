@@ -3,8 +3,8 @@
   "id": "rchain",
   "chainType": "Live",
   "bootNodes": [
-    "/ip4/34.81.223.34/tcp/30333/p2p/12D3KooWDuMEy281vd3HezctxZEPNpqBYFBKVYvuyKx4Yi5HXwTP",
-    "/ip4/35.221.232.101/tcp/30333/p2p/12D3KooWJWqaAzgAtQjRLWZvnesb2Yg2JerySy1YRirreGfTrWtv",
+    "/ip4/34.80.241.170/tcp/30333/p2p/12D3KooWDuMEy281vd3HezctxZEPNpqBYFBKVYvuyKx4Yi5HXwTP",
+    "/ip4/35.236.163.91/tcp/30333/p2p/12D3KooWJWqaAzgAtQjRLWZvnesb2Yg2JerySy1YRirreGfTrWtv",
     "/ip4/34.80.169.8/tcp/30333/p2p/12D3KooWSq1bpCp7tNZ4acX9eMSuoyD77whRMcGrxYV31wWWBo6x",
     "/ip4/34.80.237.51/tcp/30333/p2p/12D3KooWHM8v1wwoqe619XdEUQg9rdJbhYiHaikJkN9A8qtAvwfP"
   ],
