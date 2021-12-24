@@ -22,7 +22,7 @@
 
 use codec::Encode;
 use frame_system_rpc_runtime_api::AccountNonceApi;
-use appchain_barnacle_runtime::{opaque::Block, RuntimeApi};
+use fuso_runtime::{opaque::Block, RuntimeApi};
 use sc_client_api::{BlockBackend, ExecutorProvider, RemoteBackend};
 use sc_consensus_babe::{self, SlotProportion};
 use sc_executor::NativeElseWasmExecutor;
@@ -47,11 +47,11 @@ impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
 	type ExtendHostFunctions = ();
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		appchain_barnacle_runtime::api::dispatch(method, data)
+		fuso_runtime::api::dispatch(method, data)
 	}
 
 	fn native_version() -> sc_executor::NativeVersion {
-		appchain_barnacle_runtime::native_version()
+		fuso_runtime::native_version()
 	}
 }
 
@@ -87,39 +87,39 @@ pub fn fetch_nonce(client: &FullClient, account: sp_core::sr25519::Pair) -> u32 
 pub fn create_extrinsic(
 	client: &FullClient,
 	sender: sp_core::sr25519::Pair,
-	function: impl Into<appchain_barnacle_runtime::Call>,
+	function: impl Into<fuso_runtime::Call>,
 	nonce: Option<u32>,
-) -> appchain_barnacle_runtime::UncheckedExtrinsic {
+) -> fuso_runtime::UncheckedExtrinsic {
 	let function = function.into();
 	let genesis_hash = client.block_hash(0).ok().flatten().expect("Genesis block exists; qed");
 	let best_hash = client.chain_info().best_hash;
 	let best_block = client.chain_info().best_number;
 	let nonce = nonce.unwrap_or_else(|| fetch_nonce(client, sender.clone()));
 
-	let period = appchain_barnacle_runtime::BlockHashCount::get()
+	let period = fuso_runtime::BlockHashCount::get()
 		.checked_next_power_of_two()
 		.map(|c| c / 2)
 		.unwrap_or(2) as u64;
 	let tip = 0;
-	let extra: appchain_barnacle_runtime::SignedExtra = (
-		frame_system::CheckSpecVersion::<appchain_barnacle_runtime::Runtime>::new(),
-		frame_system::CheckTxVersion::<appchain_barnacle_runtime::Runtime>::new(),
-		frame_system::CheckGenesis::<appchain_barnacle_runtime::Runtime>::new(),
-		frame_system::CheckEra::<appchain_barnacle_runtime::Runtime>::from(generic::Era::mortal(
+	let extra: fuso_runtime::SignedExtra = (
+		frame_system::CheckSpecVersion::<fuso_runtime::Runtime>::new(),
+		frame_system::CheckTxVersion::<fuso_runtime::Runtime>::new(),
+		frame_system::CheckGenesis::<fuso_runtime::Runtime>::new(),
+		frame_system::CheckEra::<fuso_runtime::Runtime>::from(generic::Era::mortal(
 			period,
 			best_block.saturated_into(),
 		)),
-		frame_system::CheckNonce::<appchain_barnacle_runtime::Runtime>::from(nonce),
-		frame_system::CheckWeight::<appchain_barnacle_runtime::Runtime>::new(),
-		pallet_transaction_payment::ChargeTransactionPayment::<appchain_barnacle_runtime::Runtime>::from(tip),
+		frame_system::CheckNonce::<fuso_runtime::Runtime>::from(nonce),
+		frame_system::CheckWeight::<fuso_runtime::Runtime>::new(),
+		pallet_transaction_payment::ChargeTransactionPayment::<fuso_runtime::Runtime>::from(tip),
 	);
 
-	let raw_payload = appchain_barnacle_runtime::SignedPayload::from_raw(
+	let raw_payload = fuso_runtime::SignedPayload::from_raw(
 		function.clone(),
 		extra.clone(),
 		(
-			appchain_barnacle_runtime::VERSION.spec_version,
-			appchain_barnacle_runtime::VERSION.transaction_version,
+			fuso_runtime::VERSION.spec_version,
+			fuso_runtime::VERSION.transaction_version,
 			genesis_hash,
 			best_hash,
 			(),
@@ -129,10 +129,10 @@ pub fn create_extrinsic(
 	);
 	let signature = raw_payload.using_encoded(|e| sender.sign(e));
 
-	appchain_barnacle_runtime::UncheckedExtrinsic::new_signed(
+	fuso_runtime::UncheckedExtrinsic::new_signed(
 		function.clone(),
 		sp_runtime::AccountId32::from(sender.public()).into(),
-		appchain_barnacle_runtime::Signature::Sr25519(signature.clone()),
+		fuso_runtime::Signature::Sr25519(signature.clone()),
 		extra.clone(),
 	)
 }
@@ -710,7 +710,7 @@ mod tests {
 	use crate::service::{new_full_base, new_light_base, NewFullBase};
 	use codec::Encode;
 	use node_primitives::{Block, DigestItem, Signature};
-	use appchain_barnacle_runtime::{
+	use fuso_runtime::{
 		constants::{currency::CENTS, time::SLOT_DURATION},
 		Address, BalancesCall, Call, UncheckedExtrinsic,
 	};

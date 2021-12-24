@@ -3,6 +3,6 @@
 # TODO
 ```
 $ cargo build
-$ ./target/debug/appchain-barnacle purge-chain --dev
-$ ./target/debug/appchain-barnacle --dev --enable-offchain-indexing true
+$ ./target/debug/fuso purge-chain --dev
+$ ./target/debug/fuso --dev --enable-offchain-indexing true
 ```

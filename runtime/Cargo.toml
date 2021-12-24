@@ -1,5 +1,5 @@
 [package]
-name = 'appchain-barnacle-runtime'
+name = 'fuso-runtime'
 version = '3.0.0-monthly-2021-10'
 description = 'A fresh FRAME-based Substrate runtime, ready for hacking.'
 authors = ['Octopus Network <hi@oct.network>']
@@ -20,8 +20,7 @@ codec = { package = "parity-scale-codec", version = "2.0.0", default-features = 
 scale-info = { version = "1.0", default-features = false, features = ["derive"] }
 hex-literal = { version = "0.3.1", optional = true }
 
-pallet-template = { path = "../pallets/template", default-features = false }
-
+pallet-fuso-foundation = { path = "../pallets/foundation", default-features = false }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false, optional = true }
 frame-system-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false, optional = true }
 
@@ -76,7 +75,6 @@ runtime-benchmarks = [
     'frame-system/runtime-benchmarks',
     'hex-literal',
     'pallet-balances/runtime-benchmarks',
-    'pallet-template/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
 ]
@@ -92,7 +90,6 @@ std = [
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
-    'pallet-template/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',

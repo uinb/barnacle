@@ -34,6 +34,7 @@ pub use frame_support::{
 };
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
+pub use pallet_fuso_foundation;
 use pallet_transaction_payment::CurrencyAdapter;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -55,9 +56,6 @@ use sp_runtime::{
 	transaction_validity::TransactionPriority,
 };
 use static_assertions::const_assert;
-
-/// Import the template pallet.
-pub use pallet_template;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -112,8 +110,8 @@ pub mod opaque {
 //   https://docs.substrate.io/v3/runtime/origins#runtime-versioning
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("appchain-barnacle"),
-	impl_name: create_runtime_str!("appchain-barnacle"),
+	spec_name: create_runtime_str!("fuso"),
+	impl_name: create_runtime_str!("fuso"),
 	authoring_version: 1,
 	// The version of the runtime specification. A full node will not attempt to use its native
 	//   runtime in substitute for the on-chain Wasm runtime unless all of `spec_name`,
@@ -610,10 +608,17 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
-impl pallet_template::Config for Runtime {
-	type Event = Event;
+parameter_types! {
+    pub const UnlockDelay: BlockNumber = MINUTES * 1;
+    pub const UnlockPeriod: BlockNumber = MINUTES * 1;
 }
+
+impl pallet_fuso_foundation::Config for Runtime {
+	type Event = Event;
+	type UnlockDelay = UnlockDelay;
+	type UnlockPeriod = UnlockPeriod;
+}
+
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -629,6 +634,7 @@ construct_runtime!(
 		Babe: pallet_babe::{Pallet, Call, Storage, Config, ValidateUnsigned},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
+        Foundation: pallet_fuso_foundation::{Pallet, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		OctopusAppchain: pallet_octopus_appchain::{Pallet, Call, Storage, Config<T>, Event<T>, ValidateUnsigned}, // must before session
 		OctopusLpos: pallet_octopus_lpos::{Pallet, Call, Config, Storage, Event<T>},
@@ -641,8 +647,6 @@ construct_runtime!(
 		Beefy: pallet_beefy::{Pallet, Config<T>, Storage},
 		MmrLeaf: pallet_beefy_mmr::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
-		// Include the custom logic from the pallet-template in the runtime.
-		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
@@ -909,7 +913,6 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
-			list_benchmark!(list, extra, pallet_template, TemplateModule);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -943,7 +946,6 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-			add_benchmark!(params, batches, pallet_template, TemplateModule);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)

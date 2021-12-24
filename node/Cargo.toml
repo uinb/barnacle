@@ -1,6 +1,6 @@
 [package]
-name = 'appchain-barnacle'
-version = '3.0.0-monthly-2021-10'
+name = 'fuso'
+version = '0.1.0'
 description = 'A minimal template for octopus appchain.'
 authors = ['Octopus Network <hi@oct.network>']
 homepage = 'https://oct.network/'
@@ -11,7 +11,7 @@ repository = 'https://github.com/octopus-network/barnacle/'
 build = 'build.rs'
 
 [[bin]]
-name = 'appchain-barnacle'
+name = 'fuso'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -23,7 +23,7 @@ substrate-build-script-utils = { git = "https://github.com/paritytech/substrate.
 jsonrpc-core = '18.0.0'
 structopt = '0.3.8'
 
-appchain-barnacle-runtime = { path = '../runtime' }
+fuso-runtime = { path = '../runtime' }
 
 frame-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12" }
 frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12" }
@@ -82,4 +82,4 @@ pallet-octopus-lpos = { git = "https://github.com/octopus-network/octopus-pallet
 
 [features]
 default = []
-runtime-benchmarks = ['appchain-barnacle-runtime/runtime-benchmarks']
+runtime-benchmarks = ['fuso-runtime/runtime-benchmarks']
