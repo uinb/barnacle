@@ -608,6 +608,17 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+
+impl pallet_fuso_token::Config for Runtime {
+	type Event = Event;
+	type TokenId = u32;
+	type Balance = Balance;
+}
+
+impl pallet_fuso_receipts::Config for Runtime {
+	type Event = Event;
+}
+
 parameter_types! {
     pub const UnlockDelay: BlockNumber = MINUTES * 1;
     pub const UnlockPeriod: BlockNumber = MINUTES * 1;
@@ -647,6 +658,8 @@ construct_runtime!(
 		Beefy: pallet_beefy::{Pallet, Config<T>, Storage},
 		MmrLeaf: pallet_beefy_mmr::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
+        Token: pallet_fuso_token::{Pallet, Call, Storage, Event<T>},
+        Receipts: pallet_fuso_receipts::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

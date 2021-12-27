@@ -19,11 +19,8 @@ substrate-wasm-builder = { git = "https://github.com/paritytech/substrate.git", 
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
 scale-info = { version = "1.0", default-features = false, features = ["derive"] }
 hex-literal = { version = "0.3.1", optional = true }
-
-pallet-fuso-foundation = { path = "../pallets/foundation", default-features = false }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false, optional = true }
 frame-system-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false, optional = true }
-
 frame-executive = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 frame-support = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 frame-system = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
@@ -36,6 +33,12 @@ pallet-sudo = { git = "https://github.com/paritytech/substrate.git", branch = "p
 pallet-timestamp = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
+
+fuso-support = { git = 'https://github.com/uinb/fusotao-protocol.git', default-features = false, branch = 'feature-octopus' }
+pallet-fuso-receipts = { git = 'https://github.com/uinb/fusotao-protocol.git', default-features = false, branch = 'feature-octopus' }
+pallet-fuso-token = { git = 'https://github.com/uinb/fusotao-protocol.git', default-features = false, branch = 'feature-octopus' }
+pallet-fuso-foundation = { git = 'https://github.com/uinb/fusotao-protocol.git', default-features = false, branch = 'feature-octopus'}
+
 sp-api = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 sp-block-builder = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
 sp-consensus-babe = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.12", default-features = false }
@@ -118,4 +121,7 @@ std = [
     'pallet-octopus-appchain/std',
     'pallet-octopus-lpos/std',
     'pallet-octopus-upward-messages/std',
+	'pallet-fuso-foundation/std',
+	'pallet-fuso-token/std',
+	'pallet-fuso-receipts/std',
 ]
